@@ -25,6 +25,7 @@
 
 #include <libdivecomputer/units.h>
 
+#include "libdivecomputer/parser.h"
 #include "shearwater_predator.h"
 #include "shearwater_petrel.h"
 #include "context-private.h"
@@ -1249,18 +1250,33 @@ shearwater_predator_parser_samples_foreach (dc_parser_t *abstract, dc_sample_cal
 							sample.ppo2.sensor = 0;
 							sample.ppo2.value = data[offset + pnf + 12] * parser->calibration[0];
 							callback(DC_SAMPLE_PPO2, &sample, userdata);
+
+							sample.o2sensor.sensor = 0;
+							sample.o2sensor.millivolt = data[offset + pnf + 12];
+							sample.o2sensor.ppo2 = sample.o2sensor.millivolt * parser->calibration[0];
+							callback(DC_SAMPLE_O2SENSOR, &sample, userdata);
 						}
 
 						if (parser->calibrated & 0x02) {
 							sample.ppo2.sensor = 1;
 							sample.ppo2.value = data[offset + pnf + 14] * parser->calibration[1];
 							callback(DC_SAMPLE_PPO2, &sample, userdata);
+
+							sample.o2sensor.sensor = 1;
+							sample.o2sensor.millivolt = data[offset + pnf + 14];
+							sample.o2sensor.ppo2 = sample.o2sensor.millivolt * parser->calibration[1];
+							callback(DC_SAMPLE_O2SENSOR, &sample, userdata);
 						}
 
 						if (parser->calibrated & 0x04) {
 							sample.ppo2.sensor = 2;
 							sample.ppo2.value = data[offset + pnf + 15] * parser->calibration[2];
 							callback(DC_SAMPLE_PPO2, &sample, userdata);
+
+							sample.o2sensor.sensor = 2;
+							sample.o2sensor.millivolt = data[offset + pnf + 15];
+							sample.o2sensor.ppo2 = sample.o2sensor.millivolt * parser->calibration[2];
+							callback(DC_SAMPLE_O2SENSOR, &sample, userdata);
 						}
 					}
 				}

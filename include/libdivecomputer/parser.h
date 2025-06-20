@@ -43,11 +43,12 @@ typedef enum dc_sample_type_t {
 	DC_SAMPLE_BEARING,
 	DC_SAMPLE_VENDOR,
 	DC_SAMPLE_SETPOINT,
-	DC_SAMPLE_PPO2,
+	DC_SAMPLE_PPO2,/* Deprecated: replaced by DC_SAMPLE_O2SENSOR. */
 	DC_SAMPLE_CNS,
 	DC_SAMPLE_DECO,
 	DC_SAMPLE_GASMIX,
 	DC_SAMPLE_TTS,		// time to surface in seconds
+	DC_SAMPLE_O2SENSOR,
 } dc_sample_type_t;
 
 // Make it easy to test support compile-time with "#ifdef DC_SAMPLE_TTS"
@@ -323,6 +324,11 @@ typedef union dc_sample_value_t {
 		unsigned int sensor;
 		double value;
 	} ppo2;
+	struct {
+		unsigned int sensor;
+		double ppo2;
+		double millivolt;
+	} o2sensor;
 	double cns;
 	struct {
 		unsigned int type;
