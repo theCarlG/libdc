@@ -61,3 +61,6 @@ Makefile.in
 
 # Artifact produced by the Subsurface MSVC build
 /contrib/msvc/x64/
+
+.cache
+compile_commands.json
